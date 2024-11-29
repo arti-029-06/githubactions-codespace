@@ -1,0 +1,45 @@
+name: Update README with Random Joke
+
+on:
+  schedule:
+    - cron: '0 * * * *'  # Runs every hour at the start of the hour
+  workflow_dispatch:  # Allows the workflow to be manually triggered
+
+jobs:
+  update-joke:
+    runs-on: ubuntu-latest
+    
+    steps:
+      # Step 1: Checkout the repository
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      # Step 2: Fetch a random joke from the API
+      - name: Fetch Random Joke
+        id: joke
+        run: |
+          # Use curl to get a random joke from the API
+          RESPONSE=$(curl -s https://official-joke-api.appspot.com/random_joke)
+          
+          # Extract the setup and punchline using jq
+          SETUP=$(echo "$RESPONSE" | jq -r '.setup')
+          PUNCHLINE=$(echo "$RESPONSE" | jq -r '.punchline')
+          
+          # Save the setup and punchline as environment variables for use in later steps
+          echo "SETUP=$SETUP" >> $GITHUB_ENV
+          echo "PUNCHLINE=$PUNCHLINE" >> $GITHUB_ENV
+
+      # Step 3: Update README.md with the new joke
+      - name: Update README.md with joke
+        run: |
+          # Replace placeholders in README with the joke setup and punchline
+          sed -i "s/{JOKE_SETUP}/${SETUP}/g" README.md
+          sed -i "s/{JOKE_PUNCHLINE}/${PUNCHLINE}/g" README.md
+          
+          # Commit the changes to the README
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git config --global user.name "github-actions"
+          git add README.md
+          git commit -m "Update joke in README" || echo "No changes"
+          git push
+
