@@ -36,9 +36,14 @@ jobs:
           sed -i "s/{JOKE_SETUP}/${SETUP}/g" README.md
           sed -i "s/{JOKE_PUNCHLINE}/${PUNCHLINE}/g" README.md
           
+          # Configure Git to use the GitHub token for authentication
+          git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git config --global user.name "github-actions[bot]"
+          
+          # Use the token stored in the secrets to authenticate
+          git remote set-url origin https://x-access-token:${{ secrets.ACCESS_TOKEN }}@github.com/${{ github.repository }}
+          
           # Commit the changes to the README
-          git config --global user.email "github-actions[bot]@users.noreply.github.com"
-          git config --global user.name "github-actions"
           git add README.md
           git commit -m "Update joke in README" || echo "No changes"
           git push
