@@ -14,7 +14,7 @@ The GitHub Actions workflow is set up to run at the start of every hour, or when
 
 1. **Checkout Repository**: The repository is checked out to the runner.
 2. **Fetch Random Joke**: A request is made to the [Official Joke API](https://official-joke-api.appspot.com/random_joke) to fetch a random joke.
-3. **Update README**: The joke's setup and punchline are inserted into the `README.md` file by replacing the placeholders `{JOKE_SETUP}` and `{JOKE_PUNCHLINE}`.
+3. **Update README**: The joke's setup and punchline are inserted into the `README.md` file by replacing the placeholders `Why are pirates called pirates?` and `Because they arrr!`.
 4. **Commit Changes**: The changes are committed and pushed to the repository.
 
 
@@ -26,8 +26,8 @@ If you want to manually trigger the workflow, go to the **Actions** tab in your 
 
 ## Joke of the Hour
 
-**Setup**: {JOKE_SETUP}
+**Setup**: Why are pirates called pirates?
 
-**Punchline**: {JOKE_PUNCHLINE}
+**Punchline**: Because they arrr!
 
 
